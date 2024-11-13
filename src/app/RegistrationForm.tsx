@@ -1,6 +1,5 @@
 "use client";
-import { useFormState } from "react-dom";
-import { useRef } from "react";
+import { useRef, useActionState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +41,7 @@ export const RegistrationForm = ({
     issues?: string[];
   }>;
 }) => {
-  const [state, formAction] = useFormState(onFormAction, {
+  const [state, formAction] = useActionState(onFormAction, {
     message: "",
   });
   const form = useForm<z.infer<typeof schema>>({
@@ -54,6 +53,7 @@ export const RegistrationForm = ({
       zipcode: "",
     },
   });
+  const [isPosting, startPostTransition] = useTransition();
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     console.log(data);
@@ -95,7 +95,9 @@ export const RegistrationForm = ({
         onSubmit={(evt) => {
           evt.preventDefault();
           form.handleSubmit(() => {
-            formAction(new FormData(formRef.current!));
+            startPostTransition(() => {
+              formAction(new FormData(formRef.current!));
+            });
           })(evt);
         }}
         className="space-y-8"
