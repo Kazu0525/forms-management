@@ -1,5 +1,6 @@
 "use client";
-import { useRef, useActionState, useTransition } from "react";
+import { useRef, useTransition } from "react";
+import { useFormState } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +42,7 @@ export const RegistrationForm = ({
     issues?: string[];
   }>;
 }) => {
-  const [state, formAction] = useActionState(onFormAction, {
+  const [state, formAction] = useFormState(onFormAction, {
     message: "",
   });
   const form = useForm<z.infer<typeof schema>>({
