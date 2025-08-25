@@ -1,15 +1,9 @@
 // app/api/applications/[id]/status/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
-interface RouteContext {
-  params: {
-    id: string
-  }
-}
-
 export async function PATCH(
   request: NextRequest,
-  { params }: RouteContext
+  { params }: { params: { id: string } }
 ) {
   try {
     const { id } = params
